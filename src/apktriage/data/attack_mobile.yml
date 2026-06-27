@@ -1,0 +1,77 @@
+# Maps observable static signals to MITRE ATT&CK Mobile techniques.
+# Reference: https://attack.mitre.org/matrices/mobile/
+#
+# Three signal kinds are matched by attack_map.py:
+#   permissions   exact Android permission constant (last dotted component)
+#   apis          substring match against a suspicious API descriptor / smali ref
+#   finding_cats  a Finding.category emitted by an earlier stage
+# Each technique lists the evidence it should fire on; an empty match list
+# means "only fire when another stage hands us this technique id directly".
+
+- id: T1407
+  name: Download New Code at Runtime
+  tactic: Defense Evasion
+  finding_cats: [dynamic_code]
+  apis: ["DexClassLoader", "PathClassLoader", "loadLibrary", "System.load"]
+
+- id: T1406
+  name: Obfuscated Files or Information
+  tactic: Defense Evasion
+  finding_cats: [packer, obfuscation]
+
+- id: T1521
+  name: Encrypted Channel
+  tactic: Command and Control
+  apis: ["javax.crypto", "Cipher", "SecretKeySpec", "AES", "javax/crypto"]
+
+- id: T1437
+  name: Application Layer Protocol
+  tactic: Command and Control
+  finding_cats: [c2_indicator]
+
+- id: T1422
+  name: System Network Configuration Discovery
+  tactic: Discovery
+  permissions: [ACCESS_NETWORK_STATE, ACCESS_WIFI_STATE]
+
+- id: T1426
+  name: System Information Discovery
+  tactic: Discovery
+  permissions: [READ_PHONE_STATE]
+  apis: ["getDeviceId", "getSubscriberId", "getSimSerialNumber"]
+
+- id: T1430
+  name: Location Tracking
+  tactic: Collection
+  permissions: [ACCESS_FINE_LOCATION, ACCESS_COARSE_LOCATION]
+
+- id: T1636.004
+  name: Protected User Data - SMS Messages
+  tactic: Collection
+  permissions: [READ_SMS, RECEIVE_SMS, SEND_SMS]
+  apis: ["SmsManager", "sendTextMessage"]
+
+- id: T1636.003
+  name: Protected User Data - Contact List
+  tactic: Collection
+  permissions: [READ_CONTACTS, WRITE_CONTACTS]
+
+- id: T1429
+  name: Audio Capture
+  tactic: Collection
+  permissions: [RECORD_AUDIO]
+
+- id: T1512
+  name: Video Capture
+  tactic: Collection
+  permissions: [CAMERA]
+
+- id: T1623
+  name: Command and Scripting Interpreter
+  tactic: Execution
+  apis: ["Runtime.exec", "ProcessBuilder", "Runtime;->exec"]
+
+- id: T1418
+  name: Software Discovery
+  tactic: Discovery
+  apis: ["getInstalledPackages", "getInstalledApplications"]
