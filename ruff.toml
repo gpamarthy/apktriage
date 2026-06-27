@@ -1,0 +1,43 @@
+line-length = 100
+target-version = "py311"
+extend-exclude = [".venv", "build", "dist"]
+
+[lint]
+select = [
+    "E",    # pycodestyle errors
+    "W",    # pycodestyle warnings
+    "F",    # pyflakes
+    "I",    # isort
+    "UP",   # pyupgrade
+    "B",    # flake8-bugbear
+    "SIM",  # flake8-simplify
+    "RUF",  # ruff
+    "PL",   # pylint
+    "PT",   # flake8-pytest-style
+    "RET",  # flake8-return
+    "ARG",  # flake8-unused-arguments
+    "TID",  # flake8-tidy-imports
+    "C4",   # flake8-comprehensions
+    "T20",  # flake8-print (forbid print in src)
+    "ANN",  # flake8-annotations
+]
+ignore = [
+    "E501",     # line length handled by formatter
+    "PLR0913",  # too many arguments
+    "PLR2004",  # magic value comparisons
+    "ANN401",   # androguard/lief objects are untyped; we annotate them as Any
+]
+
+[lint.per-file-ignores]
+"tests/**" = ["ANN", "PLR2004", "ARG", "S101", "T20"]
+"src/apktriage/cli.py" = ["T20", "PLC0415", "B008"]  # typer idiom + lazy imports keep startup fast
+"src/apktriage/unpack.py" = ["PLC0415"]  # androguard import is slow; load it lazily
+"examples/**" = ["T20", "ANN"]
+
+[lint.isort]
+known-first-party = ["apktriage"]
+
+[format]
+quote-style = "double"
+indent-style = "space"
+line-ending = "lf"

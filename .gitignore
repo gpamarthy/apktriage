@@ -1,0 +1,28 @@
+.venv/
+__pycache__/
+*.pyc
+*.egg-info/
+build/
+dist/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+coverage.xml
+htmlcov/
+
+# AI-client context files stay local, never committed
+AGENTS.md
+CLAUDE.md
+GEMINI.md
+
+# Scratch analysis output
+out/
+*.apk.out/
+
+# apktool intermediate build artifacts (fixture is rebuilt from src/)
+tests/fixtures/src/build/
+
+# Downloaded real-APK corpus (quarantine; never commit samples, esp. malware).
+# manifest.yml + corpus.lock.json ARE committed; the binaries are not.
+tests/corpus/samples/
