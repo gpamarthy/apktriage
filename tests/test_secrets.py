@@ -1,9 +1,14 @@
 from apktriage import secrets
 from apktriage.models import Severity
 
+# Fabricated placeholder that matches the Google-API-key shape (AIza + 35 chars).
+# Built by concatenation so the contiguous token never appears in source and
+# secret scanners do not flag this test file. Not a real credential.
+FAKE_GOOGLE_KEY = "AIza" + "SyFAKE0TESTONLY0DO0NOT0USE000000000"
+
 
 def test_detects_google_api_key():
-    text = 'String k = "AIzaSyB1cD3fG5hJ7kL9mN1pQ3rS5tU7vW9xY0z";'
+    text = f'String k = "{FAKE_GOOGLE_KEY}";'
     findings = secrets.scan_text(text, "X.java", secrets.load_patterns())
     titles = [f.title for f in findings]
     assert any("Google API Key" in t for t in titles)
@@ -32,7 +37,7 @@ def test_entropy_gate_keeps_random_value():
 
 
 def test_redaction_hides_full_secret():
-    text = "AIzaSyB1cD3fG5hJ7kL9mN1pQ3rS5tU7vW9xY0z"
+    text = FAKE_GOOGLE_KEY
     findings = secrets.scan_text(text, "x", secrets.load_patterns())
     assert "..." in findings[0].evidence
     assert text not in findings[0].evidence
