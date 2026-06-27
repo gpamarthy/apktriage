@@ -1,5 +1,7 @@
 # apktriage
 
+[![ci](https://github.com/gpamarthy/apktriage/actions/workflows/ci.yml/badge.svg)](https://github.com/gpamarthy/apktriage/actions/workflows/ci.yml)
+
 Static APK reverse-engineering and triage toolkit. Point it at an `.apk` and it
 unpacks and decompiles the app, digs through the native ARM `.so` libraries,
 flags packers/obfuscation, pulls hardcoded secrets and C2/crypto indicators out
