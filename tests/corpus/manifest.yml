@@ -1,0 +1,110 @@
+# Real-APK test corpus. Each entry is fetched by fetch.py, pinned by SHA-256 in
+# corpus.lock.json, and validated by tests/test_corpus.py.
+#
+# Sources:
+#   fdroid  - real benign open-source apps (reproducible builds, hash-stable).
+#   ashishb - real malware from github.com/ashishb/android-malware, pinned to a
+#             fixed commit for immutability. Quarantined, never executed.
+#
+# expect schema (all optional; structural, not exact-value, so they stay robust):
+#   min_findings      int   - at least this many findings
+#   require_categories list - every listed Finding.category must appear
+#   any_categories    list  - at least one listed category must appear
+#   min_attack        int   - at least this many ATT&CK techniques mapped
+#   max_risk          int   - risk_score must not exceed this (benign sanity cap)
+#   apkid             list  - {category, name} verdicts APKiD must report (real
+#                             packer/obfuscator/anti-vm detection on this sample)
+
+ashishb_commit: &commit 3097faef00fb38afaf4bb90e25167907047ec607
+
+samples:
+  # ---- benign (F-Droid) ----
+  - name: vlc_native
+    source: fdroid
+    url: https://f-droid.org/repo/org.videolan.vlc_13070106.apk
+    category: benign
+    traits: [native, large]
+    expect:
+      require_categories: [native_lib]   # arm64-v8a .so must be parsed
+      min_attack: 0
+
+  - name: newpipe
+    source: fdroid
+    url: https://f-droid.org/repo/org.schabi.newpipe_1013.apk
+    category: benign
+    traits: [kotlin]
+    expect:
+      min_findings: 1
+
+  - name: fdroid_client
+    source: fdroid
+    url: https://f-droid.org/repo/org.fdroid.fdroid_2000010.apk
+    category: benign
+    traits: [no_native]
+    expect:
+      min_findings: 1
+
+  # ---- malware (ashishb/android-malware @ pinned commit) ----
+  - name: geinimi
+    source: ashishb
+    commit: *commit
+    path: unclassified_apks/geinimi/404FD6F9113870D1B6E63DCD23CFE206.apk
+    category: malware
+    family: Geinimi (early Android trojan / C2)
+    expect:
+      min_findings: 2
+      any_categories: [permission, c2_indicator, dynamic_code, secret, sms]
+      min_attack: 1
+
+  - name: pjapps
+    source: ashishb
+    commit: *commit
+    path: unclassified_apks/PJAPPS/9A065ACDA242887EA1D384DCA8E1F79E.apk
+    category: malware
+    family: PJApps (trojanized apps)
+    expect:
+      min_findings: 2
+      any_categories: [permission, c2_indicator, dynamic_code, secret, sms]
+      min_attack: 1
+      apkid:
+        - {category: anti_vm, name: subscriber ID check}
+
+  - name: plapk
+    source: ashishb
+    commit: *commit
+    path: Android.Malware.at_plapk.a/com.fdhgkjhrtjkjbx.model.apk
+    category: malware
+    family: plankton/plapk
+    expect:
+      min_findings: 2
+      any_categories: [permission, c2_indicator, dynamic_code, secret, sms]
+      min_attack: 1
+      apkid:
+        - {category: packer, name: Bangcle}
+
+  - name: trojan_downloader
+    source: ashishb
+    commit: *commit
+    path: TrojanDownloader.Agent.JI/Google-play.apk
+    category: malware
+    family: TrojanDownloader.Agent.JI
+    expect:
+      min_findings: 2
+      any_categories: [permission, c2_indicator, dynamic_code, secret, sms]
+      min_attack: 1
+      apkid:
+        - {category: obfuscator, name: DexGuard}
+        - {category: anti_disassembly, name: illegal class name}
+
+  - name: facebook_otp
+    source: ashishb
+    commit: *commit
+    path: facebook_otp/021d55c415ff951c8e7b1ce3f94399bb.apk
+    category: malware
+    family: Facebook OTP / SMS stealer
+    expect:
+      min_findings: 2
+      any_categories: [permission, c2_indicator, dynamic_code, secret, sms]
+      min_attack: 1
+      apkid:
+        - {category: anti_vm, name: device ID check}

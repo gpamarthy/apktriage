@@ -1,0 +1,34 @@
+{
+  "facebook_otp": {
+    "sha256": "f448c6d8e2e970020c1993be69120a6a8761df7be978f989d41da8c531c33063",
+    "size": 379083
+  },
+  "fdroid_client": {
+    "sha256": "0b6c65becb0712828625976c6baa76fc40153f77871487b5bc231c3433856b50",
+    "size": 15002599
+  },
+  "geinimi": {
+    "sha256": "5d93e04123b76783bdda32d8967702d7240e1b60c171c50637377d1a008270d3",
+    "size": 82752
+  },
+  "newpipe": {
+    "sha256": "88a1c99ca48394af431b24379783165860aaab3f7f45cce9ca6b8a7d2139a4d6",
+    "size": 10901946
+  },
+  "pjapps": {
+    "sha256": "1241d954310b4f0709560c691cd8483051e9264a277b13c9fbd587cc603b48e0",
+    "size": 1413930
+  },
+  "plapk": {
+    "sha256": "9a0dfff4d05e739d53da02e9275b67dcff6ca1fdd82d65cb2c06b96b90fa3c06",
+    "size": 2514506
+  },
+  "trojan_downloader": {
+    "sha256": "d56f569e1d056a400e3b1fc19cd5291842bdfde8bf219757ceec4c9378a60292",
+    "size": 198800
+  },
+  "vlc_native": {
+    "sha256": "355ff246a0348c094a256926ea31cbec92701a2faca3d41d49170798c550ee3b",
+    "size": 47990842
+  }
+}
